@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/events
+Content-Type: application/json
+
+{
+    "name": "Konsertti",
+    "description": "konsertti kaupungintalolla",
+    "date": "2026-10-15",
+    "location": "Helsinki"
+}
