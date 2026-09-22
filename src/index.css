@@ -1,0 +1,80 @@
+* {
+  font-family: cursive;
+}
+
+body {
+  background-color: rgb(36, 29, 52);
+}
+
+.loginForm {
+  background-color: rgba(134, 130, 130, 0.76);
+  color: white;
+  width: 35%;
+  margin: auto;
+  padding: 10px;
+  border: 4px dashed white;
+  margin-top: 50px;
+  border-radius: 10px;
+  text-align: center;
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    font-style: oblique;
+    text-align: center;
+  }
+  form {
+    text-align: center;
+    input {
+      border-radius: 5px;
+      border: none;
+    }
+  }
+  input {
+    margin-left: 5px;
+  }
+}
+
+.username {
+  padding: 3px;
+}
+
+.password {
+  padding: 3px;
+}
+
+.loginbtn {
+  padding: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 90px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(68, 68, 90);
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.loginbtn:hover {
+  box-shadow: 0 0 12px 4px rgba(68, 68, 90, 0.8);
+  transform: translateY(-2px);
+}
+
+.adminbtn {
+  padding: 10px;
+  width: 120px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(68, 68, 90);
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.adminbtn:hover {
+  box-shadow: 0 0 12px 4px rgba(68, 68, 90, 0.8);
+  transform: translateY(-2px);
+}

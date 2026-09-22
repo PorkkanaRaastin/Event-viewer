@@ -1,9 +1,12 @@
+import '../src/index.css';
+import LoginForm from '../components/loginComponents.jsx'
+
 const Login = () => {
-    return (
-        <div>
-            neekeri
-        </div>
-    )
+  return (
+    <div>
+        <LoginForm />
+    </div>
+  )
 }
 
 export default Login;
