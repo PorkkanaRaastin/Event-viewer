@@ -1,9 +1,13 @@
+import AdminPageComponent from '../components/admin_pageComponents'
+
 const AdminPage = () => {
+
+
     return (
         <div>
-            sd
+            <AdminPageComponent/>
         </div>
     )
 }
 
-export default AdminPage;
+export default AdminPage
