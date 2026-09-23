@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.delete(':id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const event = await Event.findByPk(req.params.id)
     if (event) {
         await event.destroy()
