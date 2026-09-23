@@ -1,24 +1,25 @@
-const loginRouter = require('express').Router()
+const router = require('express').Router()
 const bcrypt = require('bcrypt')
-const User = require('../models/user')
+const { User } = require('../models')
 
-loginRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const { username, password } = req.body
 
-    const user = await User.findOne({where: {username} })
+    const user = await User.findOne({ where: { username } })
 
     const passwordCorrect = user === null
-    ?false
-    :await bcrypt.compare(password, user.passwordHash)
+        ? false
+        : await bcrypt.compare(password, user.passwordHash)
 
     if (!(user && passwordCorrect)) {
-        return res.status(401).json({error: 'Wrong username or password!'})
+        return res.status(401).json({ error: 'väärä käyttäjänimi tai salasana' })
     }
 
     res.status(200).json({
         id: user.id,
-        username: user.username
+        username: user.username,
+        isAdmin: user.isAdmin
     })
 })
 
-module.exports = loginRouter
+module.exports = router

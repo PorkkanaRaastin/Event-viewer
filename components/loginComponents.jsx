@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import RegisterModal from './RegisterModel.jsx'
 
 const LoginForm = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
+    const [showRegister, setShowRegister] = useState(false)
     const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
@@ -26,9 +28,14 @@ const LoginForm = () => {
 
             const user = await response.json()
             localStorage.setItem('user', JSON.stringify(user))
-            navigate('/UserPage')
+
+            if (user.isAdmin) {
+                navigate('/AdminPage')
+            } else {
+                navigate('/UserPage')
+            }
         } catch {
-            setError('Failed connecting to the server')
+            setError('Error connecting to the server')
         }
     }
 
@@ -63,7 +70,11 @@ const LoginForm = () => {
             </form>
 
             <h2>Dont have account? Register now!</h2>
-            <button type="button" className="loginbtn">Register</button>
+            <button type="button" className="loginbtn" onClick={() => setShowRegister(true)}>
+                Register
+            </button>
+
+            {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
         </div>
     )
 }

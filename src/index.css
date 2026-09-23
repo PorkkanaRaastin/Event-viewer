@@ -61,3 +61,26 @@ body {
   box-shadow: 0 0 12px 4px rgba(68, 68, 90, 0.8);
   transform: translateY(-2px);
 }
+
+.modelOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modelContent {
+  background-color: rgb(68, 68, 90);
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 320px;
+  position: relative;
+  text-align: center;
+}
