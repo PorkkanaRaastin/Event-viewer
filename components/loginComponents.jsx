@@ -1,30 +1,71 @@
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
-    return(
-    <div className="loginForm">
-        <h1>Login as user</h1>
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState(null)
+    const navigate = useNavigate()
 
-        <form>
-            <div className="username">
-            <label htmlFor="username">Username</label>
-            <input id="username" type="text" />
-            </div>
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        setError(null)
 
-            <div className="password">
-            <label htmlFor="password">Password</label>
-            <input id="password" type="password" />
-            </div>
+        try {
+            const response = await fetch('http://localhost:3001/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            })
 
-            <button type="submit" className="loginbtn">Login</button>
-            <button type="submit" className="loginbtn">Register</button>
-        </form>
+            if (!response.ok) {
+                const data = await response.json()
+                setError(data.error || 'Login failed')
+                return
+            }
 
-        <h2>Are you admin? Click below</h2>
-        <button className="adminbtn">Admin login</button>
+            const user = await response.json()
+            localStorage.setItem('user', JSON.stringify(user))
+            navigate('/AdminPage')
+        } catch {
+            setError('Failed connecting to the server')
+        }
+    }
+
+    return (
+        <div className="loginForm">
+            <h1>Login as user</h1>
+
+            <form onSubmit={handleSubmit}>
+                <div className="username">
+                    <label htmlFor="username">Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        required
+                    />
+                </div>
+
+                <div className="password">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        required
+                    />
+                </div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit" className="loginbtn">Login</button>
+            </form>
+
+            <h2>Dont have account? Register now!</h2>
+            <button type="button" className="loginbtn">Register</button>
         </div>
     )
 }
 
-export default LoginForm;
+export default LoginForm

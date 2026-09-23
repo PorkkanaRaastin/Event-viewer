@@ -1,12 +1,9 @@
-import '../src/index.css';
 import LoginForm from '../components/loginComponents.jsx'
 
 const Login = () => {
   return (
-    <div>
-        <LoginForm />
-    </div>
+    <LoginForm />
   )
 }
 
-export default Login;
+export default Login

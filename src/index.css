@@ -61,20 +61,3 @@ body {
   box-shadow: 0 0 12px 4px rgba(68, 68, 90, 0.8);
   transform: translateY(-2px);
 }
-
-.adminbtn {
-  padding: 10px;
-  width: 120px;
-  border-radius: 10px;
-  border: none;
-  background-color: rgb(68, 68, 90);
-  color: white;
-  font-weight: bold;
-  font-size: medium;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-.adminbtn:hover {
-  box-shadow: 0 0 12px 4px rgba(68, 68, 90, 0.8);
-  transform: translateY(-2px);
-}
