@@ -37,6 +37,7 @@ const RegisterModel = ({onClose}) => {
                 {success ? (
                     <>
                         <h2>Account created succesfully!</h2>
+                        <h2>djaskldjsajsakjs</h2>
                         <button className='loginBtn' onClick={onclose}>Close</button>
                     </>
                 ) : (
