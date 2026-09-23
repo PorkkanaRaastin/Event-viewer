@@ -26,7 +26,7 @@ const LoginForm = () => {
 
             const user = await response.json()
             localStorage.setItem('user', JSON.stringify(user))
-            navigate('/AdminPage')
+            navigate('/UserPage')
         } catch {
             setError('Failed connecting to the server')
         }
