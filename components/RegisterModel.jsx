@@ -1,6 +1,7 @@
-import { useState} from 'react'
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 
-const RegisterModel = ({onClose}) => {
+const RegisterModel = ({ onClose }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -29,15 +30,15 @@ const RegisterModel = ({onClose}) => {
         }
     }
 
-    return (
+    return createPortal(
         <div className='modelOverlay' onClick={onClose}>
             <div className='modelContent' onClick={(event) => event.stopPropagation()}>
-                <button className='clodeBtn' onClick={onClose}>x</button>
+                <button className='closeBtn' onClick={onClose}>×</button>
 
                 {success ? (
                     <>
                         <h2>Account created succesfully!</h2>
-                        <button className='loginBtn' onClick={onclose}>Close</button>
+                        <button className='closebtn' onClick={onClose}>Close</button>
                     </>
                 ) : (
                     <>
@@ -45,7 +46,7 @@ const RegisterModel = ({onClose}) => {
                         <form onSubmit={handleSubmit}>
                             <div className='username'>
                                 <label htmlFor="reg-username">Username</label>
-                                <input 
+                                <input
                                     id='reg-username'
                                     type='text'
                                     value={username}
@@ -54,22 +55,24 @@ const RegisterModel = ({onClose}) => {
                                 />
                             </div>
                             <div className='password'>
-                                <label htmlFor="req-password">Password</label>
-                                <input 
+                                <label htmlFor="reg-password">Password</label>
+                                <input
                                     id='reg-password'
                                     type='password'
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
+                                    required
                                 />
                             </div>
 
                             {error && <p style={{ color: 'red' }}>{error}</p>}
-                            <button type='submit' className='loginbtn'>Register</button>
+                            <button type='submit' className='registerbtn'>Register</button>
                         </form>
                     </>
                 )}
             </div>
-        </div>
+        </div>,
+        document.body
     )
 }
 
