@@ -12,7 +12,7 @@ const UserPage = () => {
     return (
         <div>
             <h1>Events</h1>
-            <UserPageComponent events={events} />
+            <UserPageComponent events={events} setEvents={setEvents}/>
         </div>
     )
 }
