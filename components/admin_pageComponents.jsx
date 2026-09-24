@@ -15,7 +15,7 @@ const AdminPageComponents = ({ events, setEvents }) => {
 
     useEffect(() => {
         userService.getAll()
-            .then(data => setUsers(data))
+            .then(data => setUsers(data.filter(user => !user.isAdmin)))
             .catch(error => console.log('failed to load users', error))
     }, [])
 
@@ -25,8 +25,18 @@ const AdminPageComponents = ({ events, setEvents }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const loggedUser = JSON.parse(window.localStorage.getItem('user'))
+
+        if (!loggedUser) {
+            console.log('you are not logged in')
+            return
+        }
+
         try {
-            const created = await eventService.create(newEvent)
+            const created = await eventService.create({
+                ...newEvent,
+                userId: loggedUser.id
+            })
             setEvents(events.concat(created))
             setNewEvent({ name: '', description: '', date: '', location: '' })
             setShowForm(false)

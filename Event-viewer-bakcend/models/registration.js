@@ -9,16 +9,10 @@ Registration.init({
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
+    userId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        validate: {
-            isEmail: true
-        }
+        references: { model: 'users', key: 'id'}
     },
     eventId: {
         type: DataTypes.INTEGER,
