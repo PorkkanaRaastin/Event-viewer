@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import eventService from '../src/services/events'
-import UserPageComponent from '../components/user_pageComponents'
+import {UserPageComponent, UserProfile} from '../components/user_pageComponents'
 
 const UserPage = () => {
     const [events, setEvents] = useState([])
@@ -11,7 +11,7 @@ const UserPage = () => {
 
     return (
         <div>
-            <h1>Events</h1>
+            <UserProfile />
             <UserPageComponent events={events} setEvents={setEvents}/>
         </div>
     )
