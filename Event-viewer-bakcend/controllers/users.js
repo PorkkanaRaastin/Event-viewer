@@ -25,4 +25,14 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    const user = await User.findByPk(req.params.id)
+    if (user) {
+        await user.destroy()
+        res.status(204).end()
+    } else {
+        res.status(404).json({ error: 'user not found' })
+    }
+})
+
 module.exports = router

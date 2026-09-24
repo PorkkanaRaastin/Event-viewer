@@ -5,4 +5,7 @@ const User = require('./user')
 Event.hasMany(Registration, { foreignKey: 'eventId' })
 Registration.belongsTo(Event, { foreignKey: 'eventId' })
 
-module.exports = { Event, User, Registration }
+User.hasMany(Event, { foreignKey: 'userId' })
+Event.belongsTo(User, { foreignKey: 'userId' })
+
+module.exports = { Event, Registration, User }
