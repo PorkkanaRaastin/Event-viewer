@@ -6,21 +6,39 @@ import AdminPage from '../pages/admin_page.jsx'
 import Login from '../pages/login.jsx'
 import UserPage from '../pages/user_page.jsx'
 import AdminLogin from '../pages/admin_login.jsx'
+import ProtectedRoute from '../components/ProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-    <div className="starsContainer">
-      <div className="starsLayer starsSmall"></div>
-      <div className="starsLayer starsMedium"></div>
-      <div className="starsLayer starsLarge"></div>
-    </div>
-    <Routes>
-      <Route path="/" element={<Navigate to="/Login" replace />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/UserPage" element={<UserPage />} />
-      <Route path="/AdminPage" element={<AdminPage />} />
-    </Routes>
-  </BrowserRouter>
+      <div className="starsContainer">
+        <div className="starsLayer starsSmall"></div>
+        <div className="starsLayer starsMedium"></div>
+        <div className="starsLayer starsLarge"></div>
+      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/Login" replace />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/AdminLogin" element={<AdminLogin />} />
+
+        <Route
+          path="/UserPage"
+          element={
+            <ProtectedRoute>
+              <UserPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/AdminPage"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )

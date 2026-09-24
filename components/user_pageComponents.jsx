@@ -1,13 +1,34 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import createEventIcon from '../assets/createEvent.svg'
+import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
+    const [showMenu, setShowMenu] = useState(null)
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        localStorage.removeItem('user')
+        navigate('/Login')
+    }
 
     return (
-        <div>
+        <div className='pfolileWrapper'>
+            <div className='profileText' onClick={() => setShowMenu(!showMenu)}>
+            <img src={profileIcon} alt="profileIcon" width='40px' height='40px'/>
             <h2>{user?.username}</h2>
+            </div>
+
+            {showMenu && (
+                <div className='profileMenu'>
+                    <div className='profileMenuContent'>
+                        <p>sadsaa</p>
+                        <button onClick={handleLogout}>Logout</button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
