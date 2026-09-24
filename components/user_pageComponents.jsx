@@ -17,8 +17,8 @@ const UserProfile = () => {
     return (
         <div className='pfolileWrapper'>
             <div className='profileText' onClick={() => setShowMenu(!showMenu)}>
-            <img src={profileIcon} alt="profileIcon" width='40px' height='40px'/>
-            <h2>{user?.username}</h2>
+                <img src={profileIcon} alt="profileIcon" width='40px' height='40px' />
+                <h2>{user?.username}</h2>
             </div>
 
             {showMenu && (
@@ -42,14 +42,25 @@ const UserPageComponent = ({ events, setEvents }) => {
         location: ''
     })
 
+    const loggedUser = JSON.parse(window.localStorage.getItem('user'))
+
     const handleChange = (e) => {
-        setNewEvent({ ...newEvent, [e.target.name]: e.target.value})
+        setNewEvent({ ...newEvent, [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (!loggedUser) {
+            console.log('you are not logged in')
+            return
+        }
+
         try {
-            const created = await eventService.create(newEvent)
+            const created = await eventService.create({
+                ...newEvent,
+                userId: loggedUser.id
+            })
             setEvents(events.concat(created))
             setNewEvent({ name: '', description: '', date: '', location: '' })
             setShowForm(false)
@@ -58,12 +69,22 @@ const UserPageComponent = ({ events, setEvents }) => {
         }
     }
 
+    const handleDelete = async (id) => {
+        try {
+            await eventService.remove(id)
+            const updated = await eventService.getAll()
+            setEvents(updated)
+        } catch (error) {
+            console.log('event deletion failed', error)
+        }
+    }
+
     return (
         <div>
             <div className='userHeader'>
                 <h1>Events</h1>
-                <button onClick={() => setShowForm(!showForm)} style={{ background: 'none', border: 'none'}}>
-                <img src={createEventIcon} alt="Add Event" width="35px" height="35px" />
+                <button onClick={() => setShowForm(!showForm)} style={{ background: 'none', border: 'none' }}>
+                    <img src={createEventIcon} alt="Add Event" width="35px" height="35px" />
                 </button>
             </div>
 
@@ -89,19 +110,25 @@ const UserPageComponent = ({ events, setEvents }) => {
                 </div>
             )}
             <div className='eventBox'>
-            {events.length === 0 ? (
-                <p>No Events.</p>
-            ) : (
-                <div>
-                    {events.map(event => (
-                        <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
-                            <div><strong>{event.name}</strong></div>
-                            <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
-                            <div>{event.location}</div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                {events.length === 0 ? (
+                    <p>No Events.</p>
+                ) : (
+                    <div>
+                        {events.map(event => (
+                            <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
+                                <div><strong>{event.name}</strong></div>
+                                <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
+                                <div>{event.location}</div>
+                                <p>
+                                    Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
+                                </p>
+                                {loggedUser && event.userId === loggedUser.id && (
+                                    <button onClick={() => handleDelete(event.id)}>Delete</button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )
