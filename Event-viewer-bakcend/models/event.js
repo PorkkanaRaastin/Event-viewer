@@ -24,7 +24,11 @@ Event.init({
     location: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    userId: {
+    type: DataTypes.INTEGER,
+    references: { model: 'users', key: 'id' }
+}
 }, {
     sequelize,
     underscored: true,

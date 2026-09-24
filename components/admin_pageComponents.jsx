@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import createEventIcon from '../assets/createEvent.svg'
 import eventService from '../src/services/events'
+import userService from '../src/services/users'
 
 const AdminPageComponents = ({ events, setEvents }) => {
     const [showForm, setShowForm] = useState(false)
@@ -10,6 +11,13 @@ const AdminPageComponents = ({ events, setEvents }) => {
         date: '',
         location: ''
     })
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        userService.getAll()
+            .then(data => setUsers(data))
+            .catch(error => console.log('failed to load users', error))
+    }, [])
 
     const handleChange = (e) => {
         setNewEvent({ ...newEvent, [e.target.name]: e.target.value })
@@ -34,6 +42,15 @@ const AdminPageComponents = ({ events, setEvents }) => {
             setEvents(updated)
         } catch (error) {
             console.log('event deletion failed', error)
+        }
+    }
+
+    const handleUserDelete = async (id) => {
+        try {
+            await userService.remove(id)
+            setUsers(users.filter(user => user.id !== id))
+        } catch (error) {
+            console.log('user deletion failde', error)
         }
     }
 
@@ -71,6 +88,20 @@ const AdminPageComponents = ({ events, setEvents }) => {
                             <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
                             <div>{event.location}</div>
                             <button onClick={() => handleDelete(event.id)}>Delete</button>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            <h1>Users</h1>
+            {users.length === 0 ? (
+                <p>No Users.</p>
+            ) : (
+                <div>
+                    {users.map(user => (
+                        <div key={user.id}>
+                            <div><strong>{user.username}</strong></div>
+                            <button onClick={() => handleUserDelete(user.id)}>Delete</button>
                         </div>
                     ))}
                 </div>

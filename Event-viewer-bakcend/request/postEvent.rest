@@ -2,8 +2,8 @@ POST http://localhost:3001/api/events
 Content-Type: application/json
 
 {
-    "name": "Bingo",
-    "description": "Bingo kerho Espoonlahden kirkko",
+    "name": "Keilaus",
+    "description": "Keilaus klo 18, Leppävaaran keilahallissa",
     "date": "2026-9-26",
     "location": "Espoo"
 }
