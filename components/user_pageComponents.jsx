@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import createEventIcon from '../assets/createEvent.svg'
 import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
+import registrationService from '../src/services/registrations'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -79,6 +80,30 @@ const UserPageComponent = ({ events, setEvents }) => {
         }
     }
 
+    const handleJoin = async (eventId) => {
+        if (!loggedUser) {
+            console.log('you are not logged in')
+            return
+        }
+        try {
+            await registrationService.create({ userId: loggedUser.id, eventId})
+            const updated = await eventService.getAll()
+            setEvents(updated)
+        } catch (error) {
+            console.log('joinin event failde', error)
+        }
+    }
+
+    const handleLeave = async (registrationId) => {
+        try {
+            await registrationService.remove(registrationId)
+            const updated = await eventService.getAll()
+            setEvents(updated)
+        } catch (error) {
+            console.log('leaving event failed', error)
+        }
+    }
+
     return (
         <div>
             <div className='userHeader'>
@@ -114,19 +139,31 @@ const UserPageComponent = ({ events, setEvents }) => {
                     <p>No Events.</p>
                 ) : (
                     <div>
-                        {events.map(event => (
-                            <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
-                                <div><strong>{event.name}</strong></div>
-                                <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
-                                <div>{event.location}</div>
-                                <p>
-                                    Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
-                                </p>
-                                {loggedUser && event.userId === loggedUser.id && (
-                                    <button onClick={() => handleDelete(event.id)}>Delete</button>
-                                )}
-                            </div>
-                        ))}
+                        {events.map(event => {
+                            const registrations = event.registrations || []
+                            const myRegistration = loggedUser
+                                ? registrations.find(r => r.userId === loggedUser.id)
+                                : null
+                            return (
+                                <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
+                                    <div><strong>{event.name}</strong></div>
+                                    <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
+                                    <div>{event.location}</div>
+                                    <p>
+                                        Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
+                                    </p>
+                                    <span>{registrations.length} participants</span>
+                                    {myRegistration ? (
+                                        <button onClick={() => handleLeave(myRegistration.id)}>Leave</button>
+                                    ) : (
+                                        <button onClick={() => handleJoin(event.id)}>Join</button>
+                                    )}
+                                    {loggedUser && event.userId === loggedUser.id && (
+                                        <button onClick={() => handleDelete(event.id)}>Delete</button>
+                                    )}
+                                </div>
+                            )
+                        })}
                     </div>
                 )}
             </div>

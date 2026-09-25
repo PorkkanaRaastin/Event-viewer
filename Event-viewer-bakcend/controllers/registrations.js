@@ -14,4 +14,14 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    const registration = await Registration.findByPk(req.params.id)
+    if (registration) {
+        await registration.destroy()
+        res.status(204).end()
+    } else {
+        res.status(404).json({ error: 'registration not found' })
+    }
+})
+
 module.exports = router
