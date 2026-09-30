@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import eventService from '../src/services/events'
-import AdminPageComponents from '../components/admin_pageComponents'
+import {AdminPageComponents, UserProfile} from '../components/admin_pageComponents'
 
 const AdminPage = () => {
     const [events, setEvents] = useState([])
@@ -11,7 +11,7 @@ const AdminPage = () => {
 
     return (
         <div>
-            <h1>Events</h1>
+            <UserProfile />
             <AdminPageComponents events={events} setEvents={setEvents} />
         </div>
     )
