@@ -33,7 +33,6 @@ const RegisterModel = ({ onClose }) => {
     return createPortal(
         <div className='modelOverlay' onClick={onClose}>
             <div className='modelContent' onClick={(event) => event.stopPropagation()}>
-                <button className='closeBtn' onClick={onClose}>×</button>
 
                 {success ? (
                     <>
@@ -42,7 +41,10 @@ const RegisterModel = ({ onClose }) => {
                     </>
                 ) : (
                     <>
-                        <h1>Register</h1>
+                        <div className='RegisterXbutton'>
+                            <h1>Register</h1>
+                            <button className='closeBtn' onClick={onClose}>×</button>
+                        </div>
                         <form onSubmit={handleSubmit}>
                             <div className='username'>
                                 <label htmlFor="reg-username">Username</label>
