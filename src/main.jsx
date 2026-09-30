@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import './index.css'
 import AdminPage from '../pages/admin_page.jsx'
 import Login from '../pages/login.jsx'
@@ -8,37 +9,45 @@ import UserPage from '../pages/user_page.jsx'
 import AdminLogin from '../pages/admin_login.jsx'
 import ProtectedRoute from '../components/ProtectedRoute.jsx'
 
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Fontin Nimi Tähän", cursive'
+  }
+})
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <div className="starsContainer">
-        <div className="starsLayer starsSmall"></div>
-        <div className="starsLayer starsMedium"></div>
-        <div className="starsLayer starsLarge"></div>
-      </div>
-      <Routes>
-        <Route path="/" element={<Navigate to="/Login" replace />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/AdminLogin" element={<AdminLogin />} />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <div className="starsContainer">
+          <div className="starsLayer starsSmall"></div>
+          <div className="starsLayer starsMedium"></div>
+          <div className="starsLayer starsLarge"></div>
+        </div>
+        <Routes>
+          <Route path="/" element={<Navigate to="/Login" replace />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/AdminLogin" element={<AdminLogin />} />
 
-        <Route
-          path="/UserPage"
-          element={
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/UserPage"
+            element={
+              <ProtectedRoute>
+                <UserPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/AdminPage"
-          element={
-            <ProtectedRoute requireAdmin>
-              <AdminPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/AdminPage"
+            element={
+              <ProtectedRoute requireAdmin>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   </StrictMode>,
 )

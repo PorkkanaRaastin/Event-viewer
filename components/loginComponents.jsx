@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import RegisterModal from './RegisterModel.jsx'
+import RegisterModel from './RegisterModel.jsx'
+
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 const LoginForm = () => {
     const [username, setUsername] = useState('')
@@ -39,42 +42,94 @@ const LoginForm = () => {
         }
     }
 
+    const textFieldStyle = {
+        '& .MuiInputLabel-root': { color: 'white' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#a78bfa' },
+        '& .MuiInput-underline:before': { borderBottomColor: 'white' },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before': { borderBottomColor: '#a78bfa' },
+        '& .MuiInput-underline:after': { borderBottomColor: '#a78bfa' },
+        '& .MuiInputBase-input': { color: 'white' }
+    }
+
     return (
         <div className="loginForm">
             <h1>Login as user</h1>
 
             <form onSubmit={handleSubmit}>
                 <div className="username">
-                    <label htmlFor="username">Username</label>
-                    <input
+                    <TextField
+                        label="Username"
+                        variant="standard"
                         id="username"
                         type="text"
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
                         required
+                        sx={textFieldStyle}
                     />
                 </div>
 
                 <div className="password">
-                    <label htmlFor="password">Password</label>
-                    <input
+                    <TextField
+                        label="Password"
+                        variant="standard"
                         id="password"
                         type="password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         required
+                        sx={textFieldStyle}
                     />
-                </div>
+                </div><br />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" className="loginbtn">Login</button>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        backgroundColor: '#6d28d9',
+                        boxShadow: '0 0 12px rgba(167, 139, 250, 0.6)',
+                        '&:hover': {
+                            backgroundColor: '#7c3aed',
+                            boxShadow: '0 0 18px rgba(167, 139, 250, 0.9)'
+                        },
+                        borderRadius: '20px',
+                        fontWeight: 'bold',
+                        textTransform: 'none',
+                        px: 4
+                    }}
+                >
+                    Login
+                </Button>
             </form>
 
-            <h2>Dont have account? Register now!</h2>
-            <button type="button" className="loginbtn" onClick={() => setShowRegister(true)}>
-                Register
-            </button>
+            <h2>
+                Dont have account?
+                <Button
+                    onClick={() => setShowRegister(true)}
+                    variant="text"
+                    disableRipple
+                    sx={{
+                        color: 'white',
+                        fontFamily: 'inherit',
+                        fontSize: 'inherit',
+                        fontWeight: 'inherit',
+                        fontStyle: 'inherit',
+                        textTransform: 'none',
+                        textDecoration: 'underline',
+                        padding: 0,
+                        minWidth: 'auto',
+                        verticalAlign: 'baseline',
+                        '&:hover': {
+                            color: '#a78bfa',
+                            backgroundColor: 'transparent'
+                        }
+                    }}
+                >
+                    Register now!
+                </Button>
+            </h2>
 
-            {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
+            {showRegister && <RegisterModel onClose={() => setShowRegister(false)} />}
         </div>
     )
 }

@@ -167,12 +167,19 @@ body {
   text-align: center;
 }
 
+.RegisterXbutton {
+  display: flex;
+  align-items: center;
+}
+
 .closeBtn {
   border: none;
   padding: 5px;
   width: 30px;
+  height: 32px;
   border-radius: 10px;
   cursor: pointer;
+  margin-left: auto;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
