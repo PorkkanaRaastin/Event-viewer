@@ -225,6 +225,13 @@ body {
   border-radius: 10px;
 }
 
+.userCard {
+  background-color: rgba(134, 130, 130, 0.76);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
 .userHeader {
   text-align: right;
   width: 37%;
@@ -310,6 +317,11 @@ body {
   width: 10%;
   margin-left: auto;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profileText:hover {
+  transform: scale(1.2);
 }
 
 .profileText img {
@@ -353,4 +365,35 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/*admin site*/
+
+.adminBoxes {
+  display: flex;
+  gap: 30px;
+  margin: 30px;
+}
+.adminEventBox {
+  width: 50%;
+}
+
+.userBox {
+  width: 50%;
+}
+
+.EventsUsers {
+  display: flex;
+  .EventText {
+    margin: auto;
+    color: white;
+  }
+  .UsersText {
+    margin: auto;
+    color: white;
+  }
+}
+
+.calendarImg {
+  margin-left: 30px;
 }
