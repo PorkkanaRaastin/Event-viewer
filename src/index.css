@@ -297,11 +297,6 @@ body {
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-.calenderPopup form button:hover {
-  box-shadow: 0 0 12px 4px rgba(37, 176, 67, 0.8);
-  transform: translateY(-2px);
-}
-
 .calenderPopup .closeBtn {
   position: absolute;
   top: 10px;

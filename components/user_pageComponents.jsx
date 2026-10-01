@@ -6,6 +6,9 @@ import eventService from '../src/services/events'
 import registrationService from '../src/services/registrations'
 
 import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -27,7 +30,7 @@ const UserProfile = () => {
             {showMenu && (
                 <div className='profileMenu'>
                     <div className='profileMenuContent'>
-                        <p>sadsaa</p>
+                        <p>{user?.username}</p>
                         <button onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
@@ -38,6 +41,7 @@ const UserProfile = () => {
 
 const UserPageComponent = ({ events, setEvents }) => {
     const [showForm, setShowForm] = useState(false)
+    const [addHover, setAddHover] = useState(false)
     const [newEvent, setNewEvent] = useState({
         name: '',
         description: '',
@@ -73,6 +77,11 @@ const UserPageComponent = ({ events, setEvents }) => {
     }
 
     const handleDelete = async (id) => {
+        const event = events.find(e => e.id === id)
+        if (!window.confirm(`Delete event "${event?.name}" ?`)) {
+            return
+        }
+
         try {
             await eventService.remove(id)
             const updated = await eventService.getAll()
@@ -119,15 +128,50 @@ const UserPageComponent = ({ events, setEvents }) => {
         <div>
             <div className='userHeader'>
                 <h1>Events</h1>
-                <button onClick={() => setShowForm(!showForm)} style={{ background: 'none', border: 'none' }}>
+                <IconButton
+                    onClick={() => setShowForm(!showForm)}
+                    style={{ background: 'none', border: 'none' }}
+                    sx={{
+                        '&:hover img': {
+                            transform: 'scale(1.15)',
+                            filter: 'drop-shadow(0 0 6px #a78bfa)'
+                        },
+                        '& img': {
+                            transition: 'transform 0.2s ease, filter 0.2s ease'
+                        }
+                    }}>
                     <img src={createEventIcon} alt="Add Event" width="35px" height="35px" />
-                </button>
+                </IconButton>
             </div>
 
             {showForm && (
                 <div className='calenderPopup' onClick={() => setShowForm(false)}>
                     <form onSubmit={handleSubmit} onClick={(event) => event.stopPropagation()}>
-                        <button type='button' className='closebtn' onClick={() => setShowForm(false)}>×</button>
+                        <IconButton
+                            onClick={() => setShowForm(false)}
+                            sx={{
+                                width: 32,
+                                height: 32,
+                                border: '2px solid white',
+                                color: 'white',
+                                fontSize: '18px',
+                                outline: 'none',
+                                '&:focus': {
+                                    outline: 'none'
+                                },
+                                '&.Mui-focusVisible': {
+                                    outline: 'none',
+                                    boxShadow: 'none'
+                                },
+                                '&:hover': {
+                                    borderColor: '#ef4444',
+                                    color: '#ef4444',
+                                    backgroundColor: 'rgba(239, 68, 68, 0.1)'
+                                }
+                            }}
+                        >
+                            ×
+                        </IconButton>
 
                         <div>
                             <TextField
@@ -159,7 +203,7 @@ const UserPageComponent = ({ events, setEvents }) => {
                                 value={newEvent.date}
                                 onChange={handleChange}
                                 required
-                                
+
                                 sx={textFieldStyle}
                             />
                         </div>
@@ -175,7 +219,18 @@ const UserPageComponent = ({ events, setEvents }) => {
                                 sx={textFieldStyle}
                             />
                         </div>
-                        <button type='submit'>Add</button>
+                        <button
+                            type='submit'
+                            onMouseEnter={() => setAddHover(true)}
+                            onMouseLeave={() => setAddHover(false)}
+                            style={{
+                                boxShadow: addHover ? '0 0 12px 4px rgba(37, 176, 67, 0.8)' : 'none',
+                                transform: addHover ? 'translateY(-2px)' : 'none',
+                                transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                            }}
+                        >
+                            Add
+                        </button>
                     </form>
                 </div>
             )}
@@ -197,14 +252,14 @@ const UserPageComponent = ({ events, setEvents }) => {
                                     <p>
                                         Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
                                     </p>
-                                    <span>{registrations.length} participants</span>
+                                    <span>{registrations.length} participants </span>
                                     {myRegistration ? (
-                                        <button onClick={() => handleLeave(myRegistration.id)}>Leave</button>
+                                        <Button variant='contained' size='small' color='error' onClick={() => handleLeave(myRegistration.id)}>Leave</Button>
                                     ) : (
-                                        <button onClick={() => handleJoin(event.id)}>Join</button>
+                                        <Button variant='contained' size='small' color='success' onClick={() => handleJoin(event.id)}>Join</Button>
                                     )}
                                     {loggedUser && event.userId === loggedUser.id && (
-                                        <button onClick={() => handleDelete(event.id)}>Delete</button>
+                                        <IconButton color='error' onClick={() => handleDelete(event.id)} ><DeleteIcon /></IconButton>
                                     )}
                                 </div>
                             )
