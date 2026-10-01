@@ -5,6 +5,8 @@ import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
 import registrationService from '../src/services/registrations'
 
+import TextField from '@mui/material/TextField'
+
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
     const [showMenu, setShowMenu] = useState(null)
@@ -86,7 +88,7 @@ const UserPageComponent = ({ events, setEvents }) => {
             return
         }
         try {
-            await registrationService.create({ userId: loggedUser.id, eventId})
+            await registrationService.create({ userId: loggedUser.id, eventId })
             const updated = await eventService.getAll()
             setEvents(updated)
         } catch (error) {
@@ -104,6 +106,15 @@ const UserPageComponent = ({ events, setEvents }) => {
         }
     }
 
+    const textFieldStyle = {
+        '& .MuiInputLabel-root': { color: 'white' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#a78bfa' },
+        '& .MuiInput-underline:before': { borderBottomColor: 'white' },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before': { borderBottomColor: '#a78bfa' },
+        '& .MuiInput-underline:after': { borderBottomColor: '#a78bfa' },
+        '& .MuiInputBase-input': { color: 'white' }
+    }
+
     return (
         <div>
             <div className='userHeader'>
@@ -119,16 +130,50 @@ const UserPageComponent = ({ events, setEvents }) => {
                         <button type='button' className='closebtn' onClick={() => setShowForm(false)}>×</button>
 
                         <div>
-                            <input name="name" placeholder='Name' value={newEvent.name} onChange={handleChange} required />
+                            <TextField
+                                label="Name"
+                                variant="standard"
+                                name="name"
+                                value={newEvent.name}
+                                onChange={handleChange}
+                                required
+                                sx={textFieldStyle}
+                            />
                         </div>
                         <div>
-                            <input name="description" placeholder='Description' value={newEvent.description} onChange={handleChange} required />
+                            <TextField
+                                label="Description"
+                                variant="standard"
+                                name="description"
+                                value={newEvent.description}
+                                onChange={handleChange}
+                                required
+                                sx={textFieldStyle}
+                            />
                         </div>
                         <div>
-                            <input name="date" type='date' value={newEvent.date} onChange={handleChange} required />
+                            <TextField
+                                variant="standard"
+                                name="date"
+                                type="date"
+                                value={newEvent.date}
+                                onChange={handleChange}
+                                required
+                                
+                                sx={textFieldStyle}
+                            />
                         </div>
                         <div>
-                            <input name="location" placeholder='Location' value={newEvent.location} onChange={handleChange} required />
+                            <TextField
+                                label="Location"
+                                variant="standard"
+                                name="location"
+                                placeholder='Location'
+                                value={newEvent.location}
+                                onChange={handleChange}
+                                required
+                                sx={textFieldStyle}
+                            />
                         </div>
                         <button type='submit'>Add</button>
                     </form>

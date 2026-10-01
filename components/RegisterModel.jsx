@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+
 const RegisterModel = ({ onClose }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -30,6 +33,15 @@ const RegisterModel = ({ onClose }) => {
         }
     }
 
+    const textFieldStyle = {
+        '& .MuiInputLabel-root': { color: 'white' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#a78bfa' },
+        '& .MuiInput-underline:before': { borderBottomColor: 'white' },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before': { borderBottomColor: '#a78bfa' },
+        '& .MuiInput-underline:after': { borderBottomColor: '#a78bfa' },
+        '& .MuiInputBase-input': { color: 'white' }
+    }
+
     return createPortal(
         <div className='modelOverlay' onClick={onClose}>
             <div className='modelContent' onClick={(event) => event.stopPropagation()}>
@@ -47,28 +59,48 @@ const RegisterModel = ({ onClose }) => {
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className='username'>
-                                <label htmlFor="reg-username">Username</label>
-                                <input
-                                    id='reg-username'
-                                    type='text'
+                                <TextField
+                                    label="Username"
+                                    variant="standard"
+                                    id="reg-username"
                                     value={username}
                                     onChange={(event) => setUsername(event.target.value)}
                                     required
+                                    sx={textFieldStyle}
                                 />
                             </div>
                             <div className='password'>
-                                <label htmlFor="reg-password">Password</label>
-                                <input
-                                    id='reg-password'
-                                    type='password'
+                                <TextField
+                                    label="Password"
+                                    variant="standard"
+                                    id="reg-password"
+                                    type="password"
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
                                     required
+                                    sx={textFieldStyle}
                                 />
-                            </div>
+                            </div><br />
 
                             {error && <p style={{ color: 'red' }}>{error}</p>}
-                            <button type='submit' className='registerbtn'>Register</button>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#6d28d9',
+                                    boxShadow: '0 0 12px rgba(167, 139, 250, 0.6)',
+                                    '&:hover': {
+                                        backgroundColor: '#7c3aed',
+                                        boxShadow: '0 0 18px rgba(167, 139, 250, 0.9)'
+                                    },
+                                    borderRadius: '20px',
+                                    fontWeight: 'bold',
+                                    textTransform: 'none',
+                                    px: 4
+                                }}
+                            >
+                                Register
+                            </Button>
                         </form>
                     </>
                 )}
