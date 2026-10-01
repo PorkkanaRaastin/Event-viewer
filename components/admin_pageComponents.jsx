@@ -4,6 +4,8 @@ import profileIcon from '../assets/profile.svg'
 import createEventIcon from '../assets/createEvent.svg'
 import eventService from '../src/services/events'
 import userService from '../src/services/users'
+import EventCard from './EventCard.jsx'
+import { useColorScheme } from '@mui/material/styles'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -18,8 +20,8 @@ const UserProfile = () => {
     return (
         <div className='pfolileWrapper'>
             <div className='profileText' onClick={() => setShowMenu(!showMenu)}>
-            <img src={profileIcon} alt="profileIcon" width='40px' height='40px'/>
-            <h2>{user?.username}</h2>
+                <img src={profileIcon} alt="profileIcon" width='40px' height='40px' />
+                <h2>{user?.username}</h2>
             </div>
 
             {showMenu && (
@@ -132,15 +134,16 @@ const AdminPageComponents = ({ events, setEvents }) => {
                     {events.length === 0 ? (
                         <p>No Events.</p>
                     ) : (
-                        <div>
-                            {events.map(event => (
-                                <div className='eventCard' key={event.id} style={{ borderLeft: '4px solid #4a90d9', padding: '8px', marginBottom: '8px' }}>
-                                    <div><strong>{event.name}</strong></div>
-                                    <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
-                                    <div>{event.location}</div>
-                                    <button onClick={() => handleDelete(event.id)}>Delete</button>
+                        <div className='eventBox'>
+                            {events.length === 0 ? (
+                                <p>No Events.</p>
+                            ) : (
+                                <div>
+                                    {events.map(event => (
+                                        <EventCard key={event.id} event={event} onDelete={handleDelete} users={users} />
+                                    ))}
                                 </div>
-                            ))}
+                            )}
                         </div>
                     )}
                 </div>
@@ -152,6 +155,7 @@ const AdminPageComponents = ({ events, setEvents }) => {
                         <div>
                             {users.map(user => (
                                 <div className='userCard' key={user.id} style={{ borderLeft: '4px solid #d94a4a', padding: '8px', marginBottom: '8px' }}>
+                                    <img src={profileIcon} style={{background: 'black', borderRadius: '12px'}}/>
                                     <div><strong>{user.username}</strong></div>
                                     <button onClick={() => handleUserDelete(user.id)}>Delete</button>
                                 </div>
@@ -164,4 +168,4 @@ const AdminPageComponents = ({ events, setEvents }) => {
     )
 }
 
-export  {AdminPageComponents, UserProfile}
+export { AdminPageComponents, UserProfile }

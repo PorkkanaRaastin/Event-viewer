@@ -10,37 +10,39 @@ const LoginForm = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
     const [showRegister, setShowRegister] = useState(false)
+    const [isOpening, setIsOpening] = useState(false)
     const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
-        event.preventDefault()
-        setError(null)
+    event.preventDefault()
+    setError(null)
 
-        try {
-            const response = await fetch('http://localhost:3001/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            })
+    try {
+        const response = await fetch('http://localhost:3001/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        })
 
-            if (!response.ok) {
-                const data = await response.json()
-                setError(data.error || 'Login failed')
-                return
-            }
-
-            const user = await response.json()
-            localStorage.setItem('user', JSON.stringify(user))
-
-            if (user.isAdmin) {
-                navigate('/AdminPage')
-            } else {
-                navigate('/UserPage')
-            }
-        } catch {
-            setError('Error connecting to the server')
+        if (!response.ok) {
+            const data = await response.json()
+            setError(data.error || 'Login failed')
+            return
         }
+
+        const user = await response.json()
+        localStorage.setItem('user', JSON.stringify(user))
+        sessionStorage.setItem('playDoorAnimation', 'true')
+
+        if (user.isAdmin) {
+            navigate('/AdminPage')
+        } else {
+            navigate('/UserPage')
+        }
+    } catch {
+        setError('Error connecting to the server')
     }
+}
 
     const textFieldStyle = {
         '& .MuiInputLabel-root': { color: 'white' },
@@ -103,7 +105,7 @@ const LoginForm = () => {
             </form>
 
             <h2>
-                Dont have account?
+                Dont have account? <br />
                 <Button
                     onClick={() => setShowRegister(true)}
                     variant="text"
@@ -130,6 +132,13 @@ const LoginForm = () => {
             </h2>
 
             {showRegister && <RegisterModel onClose={() => setShowRegister(false)} />}
+
+            {isOpening && (
+                <div className='doorOverlay'>
+                    <div className='doorLeft doorOpening'></div>
+                    <div className='doorRight doorOpening'></div>
+                </div>
+            )}
         </div>
     )
 }
