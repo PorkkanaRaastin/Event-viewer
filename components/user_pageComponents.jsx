@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import userService from '../src/services/users'
 import createEventIcon from '../assets/createEvent.svg'
 import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
@@ -8,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EventCard from './EventCard.jsx'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -40,6 +42,7 @@ const UserProfile = () => {
 
 const UserPageComponent = ({ events, setEvents }) => {
     const [showForm, setShowForm] = useState(false)
+    const [users, setUsers] = useState([])
     const [addHover, setAddHover] = useState(false)
     const [newEvent, setNewEvent] = useState({
         name: '',
@@ -50,13 +53,17 @@ const UserPageComponent = ({ events, setEvents }) => {
 
     const loggedUser = JSON.parse(window.localStorage.getItem('user'))
 
+    useEffect(() => {
+        userService.getAll()
+            .then(data => setUsers(data))
+            .catch(error => console.log('failed to load users', error))
+    }, [])
     const handleChange = (e) => {
         setNewEvent({ ...newEvent, [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         if (!loggedUser) {
             console.log('you are not logged in')
             return
@@ -238,31 +245,17 @@ const UserPageComponent = ({ events, setEvents }) => {
                     <p>No Events.</p>
                 ) : (
                     <div>
-                        {events.map(event => {
-                            const registrations = event.registrations || []
-                            const myRegistration = loggedUser
-                                ? registrations.find(r => r.userId === loggedUser.id)
-                                : null
-                            return (
-                                <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
-                                    <div><strong>{event.name}</strong></div>
-                                    <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
-                                    <div>{event.location}</div>
-                                    <p>
-                                        Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
-                                    </p>
-                                    <span>{registrations.length} participants </span>
-                                    {myRegistration ? (
-                                        <Button variant='contained' size='small' color='error' onClick={() => handleLeave(myRegistration.id)}>Leave</Button>
-                                    ) : (
-                                        <Button variant='contained' size='small' color='success' onClick={() => handleJoin(event.id)}>Join</Button>
-                                    )}
-                                    {loggedUser && event.userId === loggedUser.id && (
-                                        <IconButton color='error' onClick={() => handleDelete(event.id)} ><DeleteIcon /></IconButton>
-                                    )}
-                                </div>
-                            )
-                        })}
+                        {events.map(event => (
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                onDelete={handleDelete}
+                                users={users}
+                                loggedUser={loggedUser}
+                                onJoin={handleJoin}
+                                onLeave={handleLeave}
+                            />
+                        ))}
                     </div>
                 )}
             </div>
