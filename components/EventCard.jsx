@@ -1,14 +1,18 @@
 import { useState } from 'react'
 
-const EventCard = ({ event, onDelete, users = [] }) => {
+const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave }) => {
     const [expanded, setExpanded] = useState(false)
-
     const participants = event.participants || event.registrations || []
-
+    
     const getUsername = (userId) => {
         const user = users.find(u => u.id === userId)
         return user ? user.username : `Käyttäjä #${userId}`
     }
+
+    const myRegistration = loggedUser
+        ? participants.find(p => p.userId === loggedUser.id)
+        : null
+    const isOwner = loggedUser && event.userId === loggedUser.id
 
     return (
         <div className='eventCard'>
@@ -26,13 +30,16 @@ const EventCard = ({ event, onDelete, users = [] }) => {
                 <div className='eventCardDetails'>
                     <div>{event.location}</div>
                     <div>{event.description}</div>
-
+                    {loggedUser && (
+                        <p>
+                            Created by: {isOwner ? 'You' : event.user?.username}
+                        </p>
+                    )}
                     <hr className='eventCardDivider' />
-
                     <div className='participants'>
                         {participants.length === 0 ? (
                             <p>Osallistujat: 0</p>
-                        ) : (
+                        ) : users.length > 0 ? (
                             <>
                                 <p>Osallistujat:</p>
                                 <ul>
@@ -41,10 +48,22 @@ const EventCard = ({ event, onDelete, users = [] }) => {
                                     ))}
                                 </ul>
                             </>
+                        ) : (
+                            <p>Osallistujat: {participants.length}</p>
                         )}
                     </div>
-
-                    <button className='deleteBtn' onClick={() => onDelete(event.id)}>Delete</button>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                        {onJoin && onLeave && (
+                            myRegistration ? (
+                                <button className='deleteBtn' onClick={() => onLeave(myRegistration.id)}>Leave</button>
+                            ) : (
+                                <button className='deleteBtn' onClick={() => onJoin(event.id)}>Join</button>
+                            )
+                        )}
+                        {(!loggedUser || isOwner) && (
+                            <button className='deleteBtn' onClick={() => onDelete(event.id)}>Delete</button>
+                        )}
+                    </div>
                 </div>
             )}
         </div>
