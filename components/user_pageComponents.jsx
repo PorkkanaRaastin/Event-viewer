@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import userService from '../src/services/users'
 import createEventIcon from '../assets/createEvent.svg'
 import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
@@ -8,6 +9,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EventCard from './EventCard.jsx'
 
 const UserProfile = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -40,6 +42,7 @@ const UserProfile = () => {
 
 const UserPageComponent = ({ events, setEvents }) => {
     const [showForm, setShowForm] = useState(false)
+    const [users, setUsers] = useState([])
     const [addHover, setAddHover] = useState(false)
     const [newEvent, setNewEvent] = useState({
         name: '',
@@ -50,13 +53,17 @@ const UserPageComponent = ({ events, setEvents }) => {
 
     const loggedUser = JSON.parse(window.localStorage.getItem('user'))
 
+    useEffect(() => {
+        userService.getAll()
+            .then(data => setUsers(data))
+            .catch(error => console.log('failed to load users', error))
+    }, [])
     const handleChange = (e) => {
         setNewEvent({ ...newEvent, [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         if (!loggedUser) {
             console.log('you are not logged in')
             return
