@@ -4,7 +4,6 @@ import createEventIcon from '../assets/createEvent.svg'
 import profileIcon from '../assets/profile.svg'
 import eventService from '../src/services/events'
 import registrationService from '../src/services/registrations'
-
 import TextField from '@mui/material/TextField'
 
 const UserProfile = () => {
@@ -179,7 +178,7 @@ const UserPageComponent = ({ events, setEvents }) => {
                     </form>
                 </div>
             )}
-            <div className='eventBox'>
+            <div className='userEventBox'>
                 {events.length === 0 ? (
                     <p>No Events.</p>
                 ) : (

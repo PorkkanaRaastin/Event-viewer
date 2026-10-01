@@ -223,20 +223,68 @@ body {
 /*userPage*/
 
 .eventBox {
-  width: 37%;
+  margin: auto;
+}
+
+.userEventBox {
+  width: 40%;
   margin: auto;
 }
 
 .eventCard {
+  border-left: 6px solid #4a90d9;
   background-color: rgba(134, 130, 130, 0.76);
-  border-radius: 10px;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 7px;
+  margin-right: auto;
+}
+
+.eventCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eventCardDetails {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deleteBtn {
+  align-self: flex-start;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.deleteBtn:hover {
+  box-shadow: 0 0 12px 4px rgba(233, 2, 2, 0.8);
+  transform: translateY(-2px);
 }
 
 .userCard {
   background-color: rgba(134, 130, 130, 0.76);
   border-radius: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  button {
+    margin-left: auto;
+    padding: 5px;
+    margin-right: 10px;
+  }
+  strong {
+    padding: 5px;
+  }
 }
 
 .userHeader {
@@ -378,13 +426,13 @@ body {
 
 .adminBoxes {
   display: flex;
-  gap: 30px;
-  margin: 30px;
+  gap: 20px;
+  padding: 0 20px;
+  align-items: flex-start;
 }
 .adminEventBox {
   width: 50%;
 }
-
 .userBox {
   width: 50%;
 }
@@ -403,4 +451,21 @@ body {
 
 .calendarImg {
   margin-left: 30px;
+}
+
+.eventCardDivider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  margin: 4px 0;
+}
+
+.participants p {
+  margin: 0 0 4px 0;
+  font-weight: bold;
+}
+
+.participants ul {
+  margin: 0;
+  padding-left: 18px;
 }
