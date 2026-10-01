@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const EventCard = ({ event, onDelete, users = [] }) => {
     const [expanded, setExpanded] = useState(false)
@@ -17,9 +20,13 @@ const EventCard = ({ event, onDelete, users = [] }) => {
                     <strong>{event.name}</strong>
                     <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
                 </div>
-                <button className='showMoreBtn' onClick={() => setExpanded(!expanded)}>
-                    {expanded ? 'Näytä vähemmän' : 'Näytä lisää'}
-                </button>
+                <Button
+                    className='showMoreBtn'
+                    variant='contained'
+
+                    onClick={() => setExpanded(!expanded)}>
+                    {expanded ? 'Show less' : 'Show more'}
+                </Button>
             </div>
 
             {expanded && (
@@ -34,7 +41,7 @@ const EventCard = ({ event, onDelete, users = [] }) => {
                             <p>Osallistujat: 0</p>
                         ) : (
                             <>
-                                <p>Osallistujat:</p>
+                                <p>Osallistujat: {participants.length}</p>
                                 <ul>
                                     {participants.map((p) => (
                                         <li key={p.id}>{getUsername(p.userId)}</li>
@@ -44,7 +51,20 @@ const EventCard = ({ event, onDelete, users = [] }) => {
                         )}
                     </div>
 
-                    <button className='deleteBtn' onClick={() => onDelete(event.id)}>Delete</button>
+                    <IconButton
+                        className='deleteBtn'
+                        color='error'
+                        onClick={() => onDelete(event.id)}
+                        sx={{
+                            transition: 'background-color 0.2s ease, color 0.2s ease',
+                            '&:hover': {
+                                backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                                color: '#ef4444'
+                            }
+                        }}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
                 </div>
             )}
         </div>

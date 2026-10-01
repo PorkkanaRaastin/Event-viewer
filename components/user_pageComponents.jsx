@@ -258,7 +258,19 @@ const UserPageComponent = ({ events, setEvents }) => {
                                         <Button variant='contained' size='small' color='success' onClick={() => handleJoin(event.id)}>Join</Button>
                                     )}
                                     {loggedUser && event.userId === loggedUser.id && (
-                                        <IconButton color='error' onClick={() => handleDelete(event.id)} ><DeleteIcon /></IconButton>
+                                        <IconButton
+                                            color='error'
+                                            onClick={() => handleDelete(event.id)}
+                                            sx={{
+                                                transition: 'background-color 0.2s ease, color 0.2s ease',
+                                                '&:hover': {
+                                                    backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                                                    color: '#ef4444'
+                                                }
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
                                     )}
                                 </div>
                             )
