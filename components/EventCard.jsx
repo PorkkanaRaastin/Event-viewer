@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave }) => {
     const [expanded, setExpanded] = useState(false)
     const participants = event.participants || event.registrations || []
-    
+
     const getUsername = (userId) => {
         const user = users.find(u => u.id === userId)
         return user ? user.username : `Käyttäjä #${userId}`
@@ -16,6 +16,8 @@ const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave })
         ? participants.find(p => p.userId === loggedUser.id)
         : null
     const isOwner = loggedUser && event.userId === loggedUser.id
+
+    const isAdmin = loggedUser.isAdmin === true
 
     return (
         <div className='eventCard'>
@@ -67,25 +69,23 @@ const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave })
                                 <button className='deleteBtn' onClick={() => onJoin(event.id)}>Join</button>
                             )
                         )}
-                        {(!loggedUser || isOwner) && (
-                            <button className='deleteBtn' onClick={() => onDelete(event.id)}>Delete</button>
+                        {(!loggedUser || isOwner || isAdmin) && (
+                            <IconButton
+                                className='deleteBtn'
+                                color='error'
+                                onClick={() => onDelete(event.id)}
+                                sx={{
+                                    transition: 'background-color 0.2s ease, color 0.2s ease',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                                        color: '#ef4444'
+                                    }
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
                         )}
                     </div>
-
-                    <IconButton
-                        className='deleteBtn'
-                        color='error'
-                        onClick={() => onDelete(event.id)}
-                        sx={{
-                            transition: 'background-color 0.2s ease, color 0.2s ease',
-                            '&:hover': {
-                                backgroundColor: 'rgba(239, 68, 68, 0.12)',
-                                color: '#ef4444'
-                            }
-                        }}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
                 </div>
             )}
         </div>

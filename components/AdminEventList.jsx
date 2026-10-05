@@ -1,6 +1,6 @@
 import EventCard from './EventCard.jsx'
 
-const AdminEventList = ({ events, users, onDelete }) => {
+const AdminEventList = ({ events, users, onDelete, loggedUser }) => {
     return (
         <div className='adminEventBox'>
             {events.length === 0 ? (
@@ -9,7 +9,7 @@ const AdminEventList = ({ events, users, onDelete }) => {
                 <div className='eventBox'>
                     <div>
                         {events.map(event => (
-                            <EventCard key={event.id} event={event} onDelete={onDelete} users={users} />
+                            <EventCard key={event.id} event={event} onDelete={onDelete} users={users} loggedUser={loggedUser} />
                         ))}
                     </div>
                 </div>
