@@ -48,6 +48,8 @@ const AdminPageComponents = ({ events, setEvents }) => {
     })
     const [users, setUsers] = useState([])
 
+    const loggedUser = JSON.parse(window.localStorage.getItem('user'))
+
     useEffect(() => {
         userService.getAll()
             .then(data => setUsers(data.filter(user => !user.isAdmin)))
@@ -81,6 +83,11 @@ const AdminPageComponents = ({ events, setEvents }) => {
     }
 
     const handleDelete = async (id) => {
+        const event = events.find(e => e.id === id)
+        if (!window.confirm(`Delete event "${event?.name}" ?`)) {
+            return
+        }
+
         try {
             await eventService.remove(id)
             const updated = await eventService.getAll()
@@ -140,7 +147,7 @@ const AdminPageComponents = ({ events, setEvents }) => {
             )}
 
             <div className='adminBoxes'>
-                <AdminEventList events={events} users={users} onDelete={handleDelete} />
+                <AdminEventList events={events} users={users} onDelete={handleDelete} loggedUser={loggedUser} />
                 <AdminUserList users={users} onDelete={handleUserDelete} />
             </div>
         </div>
