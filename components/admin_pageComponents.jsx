@@ -50,6 +50,8 @@ const AdminPageComponents = ({ events, setEvents }) => {
     })
     const [users, setUsers] = useState([])
 
+    const loggedUser = JSON.parse(window.localStorage.getItem('user'))
+
     useEffect(() => {
         userService.getAll()
             .then(data => setUsers(data.filter(user => !user.isAdmin)))
@@ -242,7 +244,7 @@ const AdminPageComponents = ({ events, setEvents }) => {
                             ) : (
                                 <div>
                                     {events.map(event => (
-                                        <EventCard key={event.id} event={event} onDelete={handleDelete} users={users} />
+                                        <EventCard key={event.id} event={event} onDelete={handleDelete} users={users} loggedUser={loggedUser} />
                                     ))}
                                 </div>
                             )}

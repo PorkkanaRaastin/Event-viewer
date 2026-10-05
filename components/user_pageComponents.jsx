@@ -245,43 +245,17 @@ const UserPageComponent = ({ events, setEvents }) => {
                     <p>No Events.</p>
                 ) : (
                     <div>
-                        {events.map(event => {
-                            const registrations = event.registrations || []
-                            const myRegistration = loggedUser
-                                ? registrations.find(r => r.userId === loggedUser.id)
-                                : null
-                            return (
-                                <div className='eventCard' key={event.id} style={{ borderLeft: '6px solid #4a90d9', padding: '8px', marginBottom: '15px' }}>
-                                    <div><strong>{event.name}</strong></div>
-                                    <div>{new Date(event.date).toLocaleDateString('fi-FI')}</div>
-                                    <div>{event.location}</div>
-                                    <p>
-                                        Created by: {loggedUser && event.userId === loggedUser.id ? 'You' : event.user?.username}
-                                    </p>
-                                    <span>{registrations.length} participants </span>
-                                    {myRegistration ? (
-                                        <Button variant='contained' size='small' color='error' onClick={() => handleLeave(myRegistration.id)}>Leave</Button>
-                                    ) : (
-                                        <Button variant='contained' size='small' color='success' onClick={() => handleJoin(event.id)}>Join</Button>
-                                    )}
-                                    {loggedUser && event.userId === loggedUser.id && (
-                                        <IconButton
-                                            color='error'
-                                            onClick={() => handleDelete(event.id)}
-                                            sx={{
-                                                transition: 'background-color 0.2s ease, color 0.2s ease',
-                                                '&:hover': {
-                                                    backgroundColor: 'rgba(239, 68, 68, 0.12)',
-                                                    color: '#ef4444'
-                                                }
-                                            }}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    )}
-                                </div>
-                            )
-                        })}
+                        {events.map(event => (
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                onDelete={handleDelete}
+                                users={users}
+                                loggedUser={loggedUser}
+                                onJoin={handleJoin}
+                                onLeave={handleLeave}
+                            />
+                        ))}
                     </div>
                 )}
             </div>
