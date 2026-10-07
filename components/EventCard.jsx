@@ -64,9 +64,9 @@ const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave })
                     <div style={{ display: 'flex', gap: '8px' }}>
                         {onJoin && onLeave && (
                             myRegistration ? (
-                                <button className='deleteBtn' onClick={() => onLeave(myRegistration.id)}>Leave</button>
+                                <Button variant='contained' color='error' className='deleteBtn' onClick={() => onLeave(myRegistration.id)}>Leave</Button>
                             ) : (
-                                <button className='deleteBtn' onClick={() => onJoin(event.id)}>Join</button>
+                                <Button variant='contained' color='success' className='deleteBtn' onClick={() => onJoin(event.id)}>Join</Button>
                             )
                         )}
                         {(!loggedUser || isOwner || isAdmin) && (
