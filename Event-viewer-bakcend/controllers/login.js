@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const { User } = require('../models')
 
 router.post('/', async (req, res) => {
@@ -15,7 +16,16 @@ router.post('/', async (req, res) => {
         return res.status(401).json({ error: 'väärä käyttäjänimi tai salasana' })
     }
 
+    const userForToken = {
+        id: user.id,
+        username: user.username,
+        isAdmin: user.isAdmin
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: '7d' })
+
     res.status(200).json({
+        token,
         id: user.id,
         username: user.username,
         isAdmin: user.isAdmin
