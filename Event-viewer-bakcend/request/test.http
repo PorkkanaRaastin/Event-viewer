@@ -1,0 +1,30 @@
+### 1. Kokeile hakea tapahtumat ILMAN tokenia (pitäisi epäonnistua, 401)
+GET http://localhost:3001/api/events
+
+### 2. Kokeile luoda tapahtuma ILMAN tokenia (pitäisi epäonnistua, 401)
+POST http://localhost:3001/api/events
+Content-Type: application/json
+
+{
+  "name": "Testitapahtuma",
+  "description": "Tämä ei saisi onnistua",
+  "date": "2026-12-01",
+  "location": "Testipaikka"
+}
+
+### 3. Kirjaudu sisään saadaksesi oikean tokenin
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "Niklas",
+  "password": "salasana123"
+}
+
+### 4. Kopioi edellisen vastauksen "token"-arvo tähän ja kokeile uudelleen
+GET http://localhost:3001/api/events
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJOaWtsYXMiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzkxMzU2NDQ3LCJleHAiOjE3OTE5NjEyNDd9.FsuwZy_TdoIeAKlQK2xXv4zqfUofEeWBfgvoDDYrJZM
+
+### 5. Kokeile väärennetyllä/väärällä tokenilla (pitäisi epäonnistua, 401)
+GET http://localhost:3001/api/events
+Authorization: Bearer jhgdhsfjsdkjhdsjkcsfdfyfyfhfjksnfh4.c4jmownc4rocun4ouncwunfoufowanofu4n

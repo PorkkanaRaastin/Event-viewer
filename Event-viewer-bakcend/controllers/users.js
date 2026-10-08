@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const bcrypt = require('bcrypt')
 const { User, Event } = require('../models')
+const { userExtractor, adminExtractor } = require('../utils/middleware')
 
-router.get('/', async (req, res) => {
+router.get('/', userExtractor, async (req, res) => {
     const users = await User.findAll({
         attributes: ['id', 'username', 'isAdmin'],
         include: {
@@ -31,7 +32,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', userExtractor, adminExtractor, async (req, res) => {
     const user = await User.findByPk(req.params.id)
     if (user) {
         await user.destroy()
