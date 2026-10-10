@@ -47,10 +47,10 @@ const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave })
                     <hr className='eventCardDivider' />
                     <div className='participants'>
                         {participants.length === 0 ? (
-                            <p>Osallistujat: 0</p>
+                            <p>Participants: 0</p>
                         ) : users.length > 0 ? (
                             <>
-                                <p>Osallistujat: {participants.length}</p>
+                                <p>Participants: {participants.length}</p>
                                 <ul>
                                     {participants.map((p) => (
                                         <li key={p.id}>{getUsername(p.userId)}</li>
@@ -58,7 +58,7 @@ const EventCard = ({ event, onDelete, users = [], loggedUser, onJoin, onLeave })
                                 </ul>
                             </>
                         ) : (
-                            <p>Osallistujat: {participants.length}</p>
+                            <p>Participants: {participants.length}</p>
                         )}
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
